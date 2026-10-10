@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser History Management Using Stacks | DSA Project</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Application Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="project-title">Browser History Management System</h1>
+                        <p class="project-subtitle">Data Structures & Algorithms Laboratory &bull; <strong>Stack ADT (Two-Stack Model)</strong></p>
+                    </div>
+                </div>
+                <div class="header-badges">
+                    <span class="badge badge-c">
+                        <span class="badge-dot"></span> C Core Engine
+                    </span>
+                    <span class="badge badge-dsa">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        LIFO Stack ADT
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Simulated Browser Frame / Navigation Bar -->
+        <section class="browser-frame">
+            <!-- Browser Tab Bar -->
+            <div class="browser-tabs">
+                <div class="window-controls">
+                    <span class="win-btn close"></span>
+                    <span class="win-btn minimize"></span>
+                    <span class="win-btn maximize"></span>
+                </div>
+                <div class="active-tab">
+                    <span class="tab-icon">🌐</span>
+                    <span class="tab-title" id="tabTitle">No Page Loaded</span>
+                    <span class="tab-close">&times;</span>
+                </div>
+            </div>
+
+            <!-- Navigation Controls & Address Bar -->
+            <div class="browser-nav-bar">
+                <div class="nav-buttons">
+                    <button id="btnBack" class="nav-btn" title="Go Back to previous page" aria-label="Go Back">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <button id="btnForward" class="nav-btn" title="Go Forward to next page" aria-label="Go Forward">
+                        <span>Forward</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- URL Input Form -->
+                <form id="urlForm" class="address-bar-form">
+                    <div class="input-wrapper">
+                        <span class="input-prefix-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </span>
+                        <input 
+                            type="text" 
+                            id="urlInput" 
+                            class="address-input" 
+                            placeholder="Enter website URL (e.g. google.com, github.com)..." 
+                            autocomplete="off"
+                            spellcheck="false"
+                            required
+                        >
+                    </div>
+                    <button type="submit" id="btnVisit" class="btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                        <span>Visit Website</span>
+                    </button>
+                </form>
+
+                <div class="nav-actions">
+                    <button id="btnClear" class="btn-danger" title="Clear all history and reset browser">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        <span>Clear History</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Preset URLs for easy demonstration -->
+            <div class="presets-bar">
+                <span class="presets-label">Quick Links:</span>
+                <button type="button" class="preset-chip" data-url="google.com">🔍 google.com</button>
+                <button type="button" class="preset-chip" data-url="github.com">🐙 github.com</button>
+                <button type="button" class="preset-chip" data-url="wikipedia.org">📚 wikipedia.org</button>
+                <button type="button" class="preset-chip" data-url="stackoverflow.com">💻 stackoverflow.com</button>
+                <button type="button" class="preset-chip" data-url="youtube.com">▶ youtube.com</button>
+            </div>
+        </section>
+
+        <!-- Main Workspace: Visual Stacks and Active Viewport -->
+        <main class="main-layout">
+            <!-- Left Column: Back Stack Visualizer -->
+            <section class="stack-panel back-stack-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <span class="stack-indicator indicator-back"></span>
+                        <h2>Back Stack</h2>
+                    </div>
+                    <span class="stack-badge" id="backStackCount">0 URLs</span>
+                </div>
+                <div class="panel-description">
+                    <code>backStack</code> &bull; Stores visited history in <strong>LIFO</strong> order.
+                </div>
+
+                <div class="stack-container" id="backStackContainer">
+                    <!-- Populated dynamically via script.js -->
+                    <div class="empty-state">
+                        <div class="empty-icon">📂</div>
+                        <p class="empty-text">Back stack is empty</p>
+                        <span class="empty-hint">Visit websites to push history onto this stack</span>
+                    </div>
+                </div>
+                <div class="stack-base">
+                    <span>STACK BASE (Index 0)</span>
+                </div>
+            </section>
+
+            <!-- Center Column: Current Active Page & Viewport -->
+            <section class="viewport-panel">
+                <div class="viewport-card">
+                    <div class="viewport-header">
+                        <div class="status-pill active" id="pageStatusPill">
+                            <span class="status-dot"></span>
+                            <span id="pageStatusText">Current Active Page</span>
+                        </div>
+                        <span class="dsa-action-badge" id="lastActionBadge">Ready</span>
+                    </div>
+
+                    <div class="current-url-display">
+                        <div class="current-url-label">ACTIVE URL</div>
+                        <div class="current-url-value" id="currentUrlText">No page opened yet</div>
+                    </div>
+
+                    <div class="simulated-page-body" id="pagePreviewArea">
+                        <div class="page-placeholder-content">
+                            <div class="placeholder-icon">🌐</div>
+                            <h3 id="previewTitle">Browser Ready</h3>
+                            <p id="previewDescription">Enter a website URL above or click a quick link to start navigation.</p>
+                            <div class="preview-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="statBackCount">0</span>
+                                    <span class="stat-label">Back Pages</span>
+                                </div>
+                                <div class="stat-item divider"></div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="statForwardCount">0</span>
+                                    <span class="stat-label">Forward Pages</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages & Operation Status Log -->
+                <div class="status-console-card">
+                    <div class="console-header">
+                        <div class="console-title">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="4 17 10 11 4 5"></polyline>
+                                <line x1="12" y1="19" x2="20" y2="19"></line>
+                            </svg>
+                            <span>DSA Execution Log & Status Messages</span>
+                        </div>
+                        <button type="button" id="btnClearLog" class="btn-text">Clear Log</button>
+                    </div>
+                    <div class="console-body" id="consoleMessages">
+                        <div class="log-entry log-info">
+                            <span class="log-time">00:00:00</span>
+                            <span class="log-tag">INIT</span>
+                            <span class="log-text">Browser History Management System initialized. Both stacks empty.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Forward Stack Visualizer -->
+            <section class="stack-panel forward-stack-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <span class="stack-indicator indicator-forward"></span>
+                        <h2>Forward Stack</h2>
+                    </div>
+                    <span class="stack-badge" id="forwardStackCount">0 URLs</span>
+                </div>
+                <div class="panel-description">
+                    <code>forwardStack</code> &bull; Populated when clicking <strong>Back</strong>; cleared on new visit.
+                </div>
+
+                <div class="stack-container" id="forwardStackContainer">
+                    <!-- Populated dynamically via script.js -->
+                    <div class="empty-state">
+                        <div class="empty-icon">📂</div>
+                        <p class="empty-text">Forward stack is empty</p>
+                        <span class="empty-hint">Navigating back will push pages here</span>
+                    </div>
+                </div>
+                <div class="stack-base">
+                    <span>STACK BASE (Index 0)</span>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer / DSA Architecture Reference -->
+        <footer class="app-footer">
+            <div class="footer-card">
+                <h3>💡 Two-Stack Navigation Rules</h3>
+                <div class="rules-grid">
+                    <div class="rule-box">
+                        <span class="rule-title">1. Visit New Page</span>
+                        <p>Pushes current page to <code>backStack</code>. Resets <code>forwardStack</code> to empty.</p>
+                    </div>
+                    <div class="rule-box">
+                        <span class="rule-title">2. Go Back</span>
+                        <p>Pushes current page to <code>forwardStack</code>. Pops top URL from <code>backStack</code>.</p>
+                    </div>
+                    <div class="rule-box">
+                        <span class="rule-title">3. Go Forward</span>
+                        <p>Pushes current page to <code>backStack</code>. Pops top URL from <code>forwardStack</code>.</p>
+                    </div>
+                    <div class="rule-box">
+                        <span class="rule-title">4. Clear History</span>
+                        <p>Resets <code>top = -1</code> for both stacks and clears the active page.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Frontend Script -->
+    <script src="script.js"></script>
+</body>
+</html>
